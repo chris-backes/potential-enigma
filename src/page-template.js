@@ -35,7 +35,8 @@ const generateLicense = (license) => {
     return "";
   } else {
     return `
-    ## License`;
+    ## License
+    `;
   }
 };
 
@@ -51,8 +52,7 @@ const generateContributing = (contributing, email) => {
   } else {
     return `
         ## Contributing
-        ${contributing}
-        `;
+        ${contributing}`;
   }
 };
 
@@ -75,18 +75,25 @@ module.exports = (templateData) => {
   return `
     # ${title}
     ${generateBadge(license)}
+
     ## Description
     ${description}
+
     ${generateTOC(confirmTOC, confirmMedia, mediaType, license)}
+
     ## Installation
     ${installation}
+
     ## Usage
     ${usage}
+
     ${generateMedia(confirmMedia, mediaType)}
     ${generateLicense(license)}
     ${generateContributing(contributing)}
+
     ## Tests
     ${tests}
+
     ## Questions
     If you would like to reach out to me with any questions, you can find me here:
     * Github: https://github.com/${github}

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/chris-backes/potential-enigma#readme",
   "dependencies": {
     "inquirer": "^8.2.0",
-    "inquirer-fuzzy-path": "^2.3.0"
+    "inquirer-fuzzy-path": "^2.3.0",
+    "license": "^1.0.3"
   }
 }
