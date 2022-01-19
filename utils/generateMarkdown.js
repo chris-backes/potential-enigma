@@ -28,4 +28,20 @@ function generateMarkdown(data) {
   });
 };
 
-module.exports = generateMarkdown;
+//still need to determine if I can use the fuzzy search so that user does not need to use specific source for file.
+const copyFile = (location) => {
+  return new Promise((resolve, reject) => {
+    fs.copyFile(location, "./dist/style.css", (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: "File copied!",
+      });
+    });
+  });
+};
+
+module.exports = { generateMarkdown, copyFile };

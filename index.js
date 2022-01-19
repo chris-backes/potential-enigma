@@ -1,7 +1,9 @@
 // TODO: Include packages needed for this application
 const inquirer = require("inquirer");
-// inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'))
-let fs = require("fs");
+inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'))
+const fs = require("fs");
+const { generateMarkdown, copyFile } = require('./utils/generateMarkdown')
+const pageTemplate = require('./src/page-template')
 
 const licenses = ["None", "Apache License 2.0", "GNU General Public License v3.0", "MIT License",, "BSD 2-Clause 'simiplfied' License", "BSD 3-Clause 'New' or 'Revised' License", "Boost Software License 1.0", "Creative Commons Zero v1.0 Universal", "Elipse Public License 2.0", "GNU Affero General Public License v3.0", "GNU General Public License v2.0", "GNU Lesser General Public lIcense v2.1", "Mozilla Public License 2.0", "The Unilicense"]
 
@@ -55,21 +57,26 @@ const questions = [
         type: "list",
         name: "mediaType",
         message: "What kind of media is it?",
-        choices: ["Gif", "Video", "Image"]
+        choices: ["Gif", "Video", "Image"],
+        when: ({ confirmMedia }) => {
+            return !!confirmMedia
+        }
     },
-    // {
-    //     type: "fuzzypath",
-    //     name: "path",
-    //     excludePath: nodePath => nodePath.startsWith("node_modules"),
-    //     excludePath: nodePath => nodePath == ".",
-    //     itemType: "file",
-    //     message: "Type the name of your file. Possible directory matches will be listed",
-    //     suggestOnly: false,
-    //     depthLimit: 4,
-    //     when: ({ confirmMedia }) => {
-    //         return !!confirmMedia
-    //     }
-    // },
+    {
+        type: "fuzzypath",
+        name: "path",
+        // excludePath: nodePath => nodePath.startsWith("node_modules"),
+        // excludePath: nodePath => nodePath == ".",
+        itemType: "any",
+        rootPath: "projects",
+        message: "Type the name of your file. Possible directory matches will be listed",
+        // default: "./projects",
+        suggestOnly: false,
+        // depthLimit: 5,
+        when: ({ confirmMedia }) => {
+            return !!confirmMedia
+        }
+    },
     {
         type: "list",
         name: "license",
