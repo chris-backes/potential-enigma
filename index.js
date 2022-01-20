@@ -1,8 +1,8 @@
 // TODO: Include packages needed for this application
 const inquirer = require("inquirer");
-// inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
+inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
 const fs = require("fs");
-const { resourceUsage } = require("process"); //How did this get in here
+const { resourceUsage } = require("process"); //How did this get in here?
 const { generateMarkdown, copyFile } = require("./utils/generateMarkdown");
 const pageTemplate = require("./src/page-template");
 
@@ -138,7 +138,7 @@ const questions = [
   },
   {
     type: "list",
-    name: "license",
+    name: "licenseChoice",
     message:
       "Which license would you like this project under (select 'none' if you would not like to include one)?",
     choices: licenses.map(x => x.name),
@@ -191,7 +191,6 @@ function writeToFile(data) {
 
 // TODO: Create a function to initialize app
 const init = () => {
-  inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
   return inquirer.prompt(questions);
 };
 
