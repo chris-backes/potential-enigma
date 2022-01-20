@@ -64,6 +64,8 @@ const generateBadge = (licenseChoice) => {
     : `https://img.shields.io/badge/license-${licenseChoice
         .split(" ")
         .join("%20")}-green`;
+//alternatively, https://img.shields.io/github/license/${github}/[repo name]
+//if we go with this, I ask for the repo name instaead and convert that into a title elsewhere, passing in the repo name here
 };
 const generateTOC = (confirmTOC, confirmMedia, mediaType, licenseChoice) => {
   let mediaTable = confirmMedia
@@ -100,7 +102,7 @@ const generateLicense = (licenseChoice) => {
   } else {
     return `
     ## License
-    
+
     ${license.getLicense(
       licenses.find((element) => element.name === responseData.licenseChoice)
         .file,
