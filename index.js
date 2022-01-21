@@ -68,10 +68,11 @@ const licenses = [
 const questions = [
   {
     type: "input",
-    name: "title",
-    message: "What is the title of your project/README?",
-    validate: (titleInput) => {
-      return !!titleInput;
+    name: "repo",
+    message:
+      "The name of your repo will be used as the repo for you README and generate you license badge, if any. What is your repo name?",
+    validate: (repoInput) => {
+      return !!repoInput;
     },
   },
   {
@@ -141,7 +142,7 @@ const questions = [
     name: "licenseChoice",
     message:
       "Which license would you like this project under (select 'none' if you would not like to include one)?",
-    choices: licenses.map(x => x.name),
+    choices: licenses.map((x) => x.name),
   },
   {
     type: "input",
@@ -175,17 +176,16 @@ const questions = [
 // TODO: Create a function to write README file
 function writeToFile(data) {
   return new Promise((resolve, reject) => {
-    fs.writeFile("./dist/README.md", data),
-      (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve({
-          ok: true,
-          message: "README created.",
-        });
-      };
+    fs.writeFile("./dist/README.md", data, (err) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: "README created.",
+      });
+    });
   });
 }
 

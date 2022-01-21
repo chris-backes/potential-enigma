@@ -57,16 +57,24 @@ const licenses = [
     file: "Unlicense",
   },
 ];
+//take the repo name, split it up at the hyphen, capitalize first letter in each word, and return
+const generateTitle = (repo) => {
+  let arr = repo.split("-")
+  for (let i = 0; i < arr.length; i++) {
+    //problem numero uno
+    repo[i] = repo[i].charAt(0).toUpperCase() + repo[i].substring(1)
+  }
+  return arr.join(" ")
+}
 
-const generateBadge = (licenseChoice) => {
+// This badge will only work for github repos, but will match the choice selected for a license when the repo is created
+const generateBadge = (licenseChoice, github, repo) => {
   return licenseChoice === "None"
     ? ""
-    : `https://img.shields.io/badge/license-${licenseChoice
-        .split(" ")
-        .join("%20")}-green`;
-//alternatively, https://img.shields.io/github/license/${github}/[repo name]
-//if we go with this, I ask for the repo name instaead and convert that into a title elsewhere, passing in the repo name here
+    : `https://img.shields.io/github/license/${github}/${repo}`;
 };
+
+//The optional elements get style first as empty if empty, and then inject. declared as the result of ternary operators
 const generateTOC = (confirmTOC, confirmMedia, mediaType, licenseChoice) => {
   let mediaTable = confirmMedia
     ? `* [${mediaType} of application](#${mediaType.toLowerCase()}-of-application)`
@@ -75,16 +83,15 @@ const generateTOC = (confirmTOC, confirmMedia, mediaType, licenseChoice) => {
   if (!confirmTOC) {
     return "";
   } else {
-    return `
-        ## Table of Contents
-        * [Installation](#installation)
-        * [Usage](#usage)
-        ${mediaTable}
-        * [Credits](#credits)
-        ${licenseTable}
-        * [Contributions](#contributions)
-        * [Tests](#tests)
-        * [Questions](#questions)`;
+    return `## Table of Contents
+* [Installation](#installation)
+* [Usage](#usage)
+${mediaTable}
+* [Credits](#credits)
+${licenseTable}
+* [Contributions](#contributions)
+* [Tests](#tests)
+* [Questions](#questions)`;
   }
 };
 //needs work
@@ -96,23 +103,25 @@ const generateMedia = (confirmMedia, mediaType) => {
     `;
   }
 };
-const generateLicense = (licenseChoice) => {
+
+//uses the license node package, automatically inserts user name and year where needed
+const generateLicense = (licenseChoice, github) => {
   if (licenseChoice === "None") {
     return "";
   } else {
     return `
-    ## License
+## License
 
-    ${license.getLicense(
-      licenses.find((element) => element.name === responseData.licenseChoice)
-        .file,
-      { author: "Chris Backes", year: new Date().getFullYear() }
-    )}
+${license.getLicense(
+  licenses.find((element) => element.name === licenseChoice)
+    .file,
+    { author: github, year: new Date().getFullYear() }
+)}
     `;
   }
 };
-
-const generateContributing = (contributing, email) => {
+//Inserts a link to COntributor Coveneta code of conduct if left unchanged
+const generateContributing = (contributing) => {
   if (!contributing) {
     return "";
   } else if (contributing === "Contributor Covenant Code of Conduct") {
@@ -120,7 +129,7 @@ const generateContributing = (contributing, email) => {
     ## Contributing
 
     See the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
-      `;
+    `;
   } else {
     return `
         ## Contributing
@@ -130,7 +139,7 @@ const generateContributing = (contributing, email) => {
 
 module.exports = (templateData) => {
   const {
-    title,
+    repo,
     description,
     confirmTOC,
     installation,
@@ -144,31 +153,30 @@ module.exports = (templateData) => {
     email,
   } = templateData;
 
-  return `
-    # ${title}
-    ${generateBadge(licenseChoice)}
+  return `# ${generateTitle(repo)}
+${generateBadge(licenseChoice, github, repo)}
 
-    ## Description
-    ${description}
+## Description
+${description}
 
-    ${generateTOC(confirmTOC, confirmMedia, mediaType, licenseChoice)}
+${generateTOC(confirmTOC, confirmMedia, mediaType, licenseChoice)}
 
-    ## Installation
-    ${installation}
+## Installation
+${installation}
 
-    ## Usage
-    ${usage}
+## Usage
+${usage}
 
-    ${generateMedia(confirmMedia, mediaType)}
-    ${generateLicense(licenseChoice)}
-    ${generateContributing(contributing)}
+${generateMedia(confirmMedia, mediaType)}
+${generateLicense(licenseChoice)}
+${generateContributing(contributing)}
 
-    ## Tests
-    ${tests}
+## Tests
+${tests}
 
-    ## Questions
-    If you would like to reach out to me with any questions, you can find me here:
-    * Github: https://github.com/${github}
-    * Email: ${email}
-    `;
+## Questions
+If you would like to reach out to me with any questions, you can find me here:
+* Github: https://github.com/${github}
+* Email: ${email}
+`;
 };
