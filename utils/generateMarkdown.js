@@ -1,5 +1,7 @@
 const fs = require("fs")
 
+
+//All three of three of these requirements are fulfilled in the page-template.js file. The first in generateBadge and the latter two under a single function: generateLicense
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
 function renderLicenseBadge(license) {}
