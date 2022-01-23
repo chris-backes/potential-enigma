@@ -128,7 +128,7 @@ const questions = [
     type: "list",
     name: "mediaType",
     message: "What kind of media is it?",
-    choices: ["gif", "webm", "png", "jpg"],
+    choices: ["gif", "png", "jpg"],
     when: ({ confirmMedia }) => {
       return !!confirmMedia;
     },

@@ -92,7 +92,7 @@ const generateBadge = (licenseChoice) => {
 
 //The optional elements get style first as empty if empty, and then inject. declared as the result of ternary operators
 const generateTOC = (confirmTOC, confirmMedia, mediaType, licenseChoice) => {
-  let mediaKind = mediaType === "gif" ? "Gif" : mediaType === "webm" ? "Video" : "Image"
+  let mediaKind = mediaType === "gif" ? "Gif" : "Image"
   let mediaTable = confirmMedia
     ? `* [${mediaKind} of application](#${mediaType.toLowerCase()}-of-application)`
     : "";
@@ -117,7 +117,7 @@ const generateMedia = (confirmMedia, mediaType) => {
   if (!confirmMedia) {
     return "";
   } else {
-    let mediaKind = mediaType === "gif" ? "Gif" : mediaType === "webm" ? "Video" : "Image"
+    let mediaKind = mediaType === "gif" ? "Gif" : "Image"
     return `## ${mediaKind} of Application
 ![Application ${mediaKind}](./application-media.${mediaType})
 `;
