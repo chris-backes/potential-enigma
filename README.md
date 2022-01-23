@@ -1,6 +1,7 @@
 # Potential Enimga
 
 ![License](https://img.shields.io/badge/license-MIT-green)
+
 URL: https://github.com/chris-backes/potential-enimga
 
 ## Description
@@ -20,7 +21,8 @@ This application generates a README from the command line, based on user respons
 
 ## Installation
 
-1. Clone files to your local machine. 2. From your command line, and from within the directory, enter the following commands: `npm init`, `npm install inquirer`, `npm install license`.
+1. Clone files to your local machine.
+2. From your command line, and from within the directory, enter the following commands: `npm init`, `npm install inquirer`, `npm install license`.
 
 ## Usage
 
@@ -44,7 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Contributing
 
-Currently, this applicaiton has no forseeable need to develop further, so we are not allowing people to contrubute to the applciation. You may still clone it and develop further on your own.
+Currently, this application has no forseeable need to develop further, so we are not allowing people to contrubute to the application. You may still clone it and develop further on your own.
 
 ## Tests
 
