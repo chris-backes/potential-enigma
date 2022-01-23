@@ -171,6 +171,7 @@ module.exports = (templateData) => {
 
   return `# ${generateTitle(repo)}
 ${generateBadge(licenseChoice)}
+
 URL: https://github.com/${github}/${repo}
 
 ## Description
