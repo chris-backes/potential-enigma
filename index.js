@@ -1,9 +1,7 @@
 // TODO: Include packages needed for this application
 const inquirer = require("inquirer");
-inquirer.registerPrompt("fuzzypath", require("inquirer-fuzzy-path"));
-const fs = require("fs");
-const { resourceUsage } = require("process"); //How did this get in here?
-const { generateMarkdown, copyFile } = require("./utils/generateMarkdown");
+// const { resourceUsage } = require("process"); //How did this get in here?
+const { generateMarkdown } = require("./utils/generateMarkdown");
 const pageTemplate = require("./src/page-template");
 
 const licenses = [
@@ -84,7 +82,7 @@ const questions = [
     type: "input",
     name: "repo",
     message:
-      "The name of your repo will be used as the repo for you README and generate you license badge, if any. What is your repo name?",
+      "The name of your repo will be used as the title for your README. What is your repo name?",
     validate: (repoInput) => {
       return !!repoInput;
     },
@@ -123,30 +121,14 @@ const questions = [
   {
     type: "confirm",
     name: "confirmMedia",
-    message: "Would you like to include a screenshot or video in your README?",
+    message: "Would you like to include a screenshot or video in your README (accepted file types currently are gif, webm, png, jpg)? If you select yes, the file name must be 'application-media' and in the same folder as the README. You may change this later if you wish.",
     default: true,
   },
   {
     type: "list",
     name: "mediaType",
     message: "What kind of media is it?",
-    choices: ["Gif", "Video", "Image"],
-    when: ({ confirmMedia }) => {
-      return !!confirmMedia;
-    },
-  },
-  {
-    type: "fuzzypath",
-    name: "path",
-    excludePath: (nodePath) => nodePath.startsWith("node_modules"),
-    excludePath: (nodePath) => nodePath == ".",
-    itemType: "any",
-    rootPath: "projects",
-    message:
-      "Type the name of your file. Possible directory matches will be listed",
-    default: "./projects",
-    suggestOnly: false,
-    depthLimit: 5,
+    choices: ["gif", "webm", "png", "jpg"],
     when: ({ confirmMedia }) => {
       return !!confirmMedia;
     },
@@ -169,7 +151,7 @@ const questions = [
     type: "input",
     name: "tests",
     message:
-      "Please provide any tests the users can run on the application (Do not leave blank). Multiple tests should be separated by an underscore.",
+      "Please provide any tests the users can run on the application (Do not leave blank).",
     default: "At this point, there are no tests for the application",
     validate: (testsInput) => !!testsInput,
   },
@@ -188,19 +170,8 @@ const questions = [
 ];
 
 // TODO: Create a function to write README file
+//this is done on the generateMarkdown, if what this is asking for is the fs.writeFile
 function writeToFile(data) {
-  return new Promise((resolve, reject) => {
-    fs.writeFile("./dist/README.md", data, (err) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve({
-        ok: true,
-        message: "README created.",
-      });
-    });
-  });
 }
 
 // TODO: Create a function to initialize app
@@ -214,7 +185,7 @@ init()
     return pageTemplate(initData);
   })
   .then((readmeText) => {
-    return writeToFile(readmeText);
+    return generateMarkdown(readmeText);
   })
   .then((writeToFileResponse) => {
     console.log(writeToFileResponse);

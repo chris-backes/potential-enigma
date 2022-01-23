@@ -81,16 +81,20 @@ const generateTitle = (repo) => {
 }
 
 // This badge will only work for github repos, but will match the choice selected for a license when the repo is created
-const generateBadge = (licenseChoice, github, repo) => {
+const generateBadge = (licenseChoice) => {
+  let licenseName = licenses.find((element) => element.name === licenseChoice).file
   return licenseChoice === "None"
     ? ""
-    : `![License Badge](https://img.shields.io/github/license/${github}/${repo})`;
+    : `![License](https://img.shields.io/badge/license-${licenseName
+    .split(" ")
+    .join("%20")}-green)`;
 };
 
 //The optional elements get style first as empty if empty, and then inject. declared as the result of ternary operators
 const generateTOC = (confirmTOC, confirmMedia, mediaType, licenseChoice) => {
+  let mediaKind = mediaType === "gif" ? "Gif" : mediaType === "webm" ? "Video" : "Image"
   let mediaTable = confirmMedia
-    ? `* [${mediaType} of application](#${mediaType.toLowerCase()}-of-application)`
+    ? `* [${mediaKind} of application](#${mediaType.toLowerCase()}-of-application)`
     : "";
   let licenseTable = licenseChoice === "None" ? "" : "* [License](#license)";
   if (!confirmTOC) {
@@ -104,7 +108,8 @@ ${mediaTable}
 ${licenseTable}
 * [Contributing](#contributing)
 * [Tests](#tests)
-* [Questions](#questions)`;
+* [Questions](#questions)
+`;
   }
 };
 //needs work
@@ -112,8 +117,10 @@ const generateMedia = (confirmMedia, mediaType) => {
   if (!confirmMedia) {
     return "";
   } else {
-    return `
-    `;
+    let mediaKind = mediaType === "gif" ? "Gif" : mediaType === "webm" ? "Video" : "Image"
+    return `## ${mediaKind} of Application
+![Application ${mediaKind}](./application-media.${mediaType})
+`;
   }
 };
 
@@ -125,12 +132,9 @@ const generateLicense = (licenseChoice, github) => {
   } else {
     return `## License
 ${licenses.find((element) => element.name === licenseChoice).url}
-${license.getLicense(
-  licenses.find((element) => element.name === licenseChoice)
-    .file,
-    { author: github, year: new Date().getFullYear() }
-)}
-    `;
+
+${license.getLicense(licenses.find((element) => element.name === licenseChoice).file, { author: github, year: new Date().getFullYear() })}
+`;
   }
 };
 //Inserts a link to COntributor Coveneta code of conduct if left unchanged
@@ -143,9 +147,9 @@ const generateContributing = (contributing) => {
 See the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/)
     `;
   } else {
-    return `
-## Contributing
-${contributing}`;
+    return `## Contributing
+${contributing}
+`;
   }
 };
 
@@ -166,22 +170,27 @@ module.exports = (templateData) => {
   } = templateData;
 
   return `# ${generateTitle(repo)}
-${generateBadge(licenseChoice, github, repo)}
+${generateBadge(licenseChoice)}
+URL: https://github.com/${github}/${repo}
+
 ## Description
 ${description}
+
 ${generateTOC(confirmTOC, confirmMedia, mediaType, licenseChoice)}
 ## Installation
 ${installation}
+
 ## Usage
 ${usage}
+
 ${generateMedia(confirmMedia, mediaType)}
-${generateLicense(licenseChoice)}
+${generateLicense(licenseChoice, github)}
 ${generateContributing(contributing)}
 ## Tests
 ${tests}
+
 ## Questions
 If you would like to reach out to me with any questions, you can find me here:
 * Github: https://github.com/${github}
-* Email: ${email}
-`;
+* Email: ${email}`;
 };
