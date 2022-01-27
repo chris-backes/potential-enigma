@@ -46,7 +46,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Contributing
 
-Currently, this application has no forseeable need to develop further, so we are not allowing people to contrubute to the application. You may still clone it and develop further on your own.
+Currently, there are a couple of planned exapsions:
+- adding a LICENSE.md file
 
 ## Tests
 

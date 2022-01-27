@@ -11,6 +11,11 @@ const licenses = [
     url: "None"
   },
   {
+    name: "Select Later",
+    file: "None",
+    url: "None"
+  },
+  {
     name: "Apache License 2.0",
     file: "Apache-2.0",
     url: "http://www.apache.org/licenses/LICENSE-2.0"

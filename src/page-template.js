@@ -1,7 +1,11 @@
-const license = require("license");
 const licenses = [
   {
     name: "None",
+    file: "None",
+    url: "None"
+  },
+  {
+    name: "Select Later",
     file: "None",
     url: "None"
   },
@@ -81,13 +85,11 @@ const generateTitle = (repo) => {
 }
 
 // This badge will only work for github repos, but will match the choice selected for a license when the repo is created
-const generateBadge = (licenseChoice) => {
+const generateBadge = (licenseChoice,github, repo) => {
   let licenseName = licenses.find((element) => element.name === licenseChoice).file
   return licenseChoice === "None"
     ? ""
-    : `![License](https://img.shields.io/badge/license-${licenseName
-    .split(" ")
-    .join("%20")}-green)`;
+    : `![License](https://img.shields.io/github/license/${github}/${repo}`;
 };
 
 //The optional elements get style first as empty if empty, and then inject. declared as the result of ternary operators
@@ -129,15 +131,16 @@ const generateMedia = (confirmMedia, mediaType) => {
 const generateLicense = (licenseChoice, github) => {
   if (licenseChoice === "None") {
     return "";
+  } else if (licenseChoice === "Select Later") {
+    return `## License
+Still deciding, come back later`
   } else {
     return `## License
 ${licenses.find((element) => element.name === licenseChoice).url}
-
-${license.getLicense(licenses.find((element) => element.name === licenseChoice).file, { author: github, year: new Date().getFullYear() })}
 `;
   }
 };
-//Inserts a link to COntributor Coveneta code of conduct if left unchanged
+//Inserts a link to Contributor Coveneta code of conduct if left unchanged
 const generateContributing = (contributing) => {
   if (!contributing) {
     return "";
@@ -170,7 +173,7 @@ module.exports = (templateData) => {
   } = templateData;
 
   return `# ${generateTitle(repo)}
-${generateBadge(licenseChoice)}
+${generateBadge(licenseChoice, github, repo)}
 
 URL: https://github.com/${github}/${repo}
 
